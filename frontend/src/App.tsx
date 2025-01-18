@@ -1,16 +1,13 @@
-import Banner from "./components/Banner";
-import NavBar from "./components/NavBar";
-import TopBar from "./components/TopBar";
+import Home from "./pages/Home"
 
 function App() {
-  return (<>
-    <TopBar />
-    <NavBar/>
-    <div className="h-screen">
-      <Banner/>
-    </div>
+  
+
+  return (
+    <>
+      <Home/>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
