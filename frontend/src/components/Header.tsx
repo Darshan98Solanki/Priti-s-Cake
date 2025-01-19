@@ -53,7 +53,7 @@ export default function Header() {
                                         Home
                                     </Link>
                                     <Link to="/products" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
-                                        Product
+                                        Products
                                     </Link>
                                     <a href="#" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
                                         Gallery

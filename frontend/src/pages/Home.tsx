@@ -10,8 +10,11 @@ import Banner from "../components/Banner";
 import ownerAvtar from "../assets/images/temp.jpeg"
 import About from "../components/About";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+
+    const navigator = useNavigate()
 
     return <div className="bg-[#FFF6E4] min-h-screen">
         <TopBar />
@@ -24,7 +27,11 @@ export default function Home() {
                 <div className="z-10">
                     <h1 className="text-6xl font-bold font-leckerli text-[#EAC696]">Priti's</h1>
                     <h2 className="text-4xl text-center font-semibold font-MarkoOne text-white">Cake</h2>
-                    <button className="mt-4 px-6 py-2 border-[.5px] border-[#E0E1E4] text-lg font-medium text-white bg-white/20 rounded-md hover:bg-white/30">
+                    <button className="mt-4 px-6 py-2 border-[.5px] border-[#E0E1E4] text-lg font-medium text-white bg-white/20 rounded-md hover:bg-white/30"
+                        onClick={()=>{
+                            navigator("/products")
+                        }}
+                    >
                         View Products
                     </button>
                 </div>
@@ -36,7 +43,9 @@ export default function Home() {
                 subheading="Indulge in the divine flavors of our newest, best bakery creation"
             />
             <Products/>
-            <Button title="See All Products"/>
+            <Button title="See All Products" onClick={()=>{
+                navigator("/products")
+            }}/>
             <Testimonials/>
             <Services/>
             <Banner/>
