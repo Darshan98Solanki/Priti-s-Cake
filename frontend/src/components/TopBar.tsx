@@ -10,7 +10,7 @@ export default function TopBar() {
                 <div className="mx-5 font-bold mb-1 flex items-center">|</div>
             </div>
             <div className="flex items-center">
-                <Clock size={16}/>
+                <Clock size={16} />
                 <span className="text-sm ms-2">Mon-Sun: 10:00-20:00</span>
                 <div className="mx-5 font-bold mb-1 flex items-center">|</div>
             </div>
@@ -20,11 +20,20 @@ export default function TopBar() {
             </div>
         </div>
         <div className="flex me-5 md:me-20">
-            <div className="flex items-center space-x-5">
-                <Instagram size={20}/>
-                <Facebook size={20}/>
-                <Youtube size={20}/>
-            </div>
+            <section className="flex justify-center items-center space-x-3">
+                <a className="group flex justify-center p-1 text-white font-semibold transition-transform ease-in-out duration-500 hover:scale-110">
+                    <Instagram />
+                </a>
+                <a className="group flex justify-center p-1 text-white font-semibold transition-transform ease-in-out duration-500 hover:scale-110">
+                    <Facebook />
+                </a>
+                <a className="group flex justify-center p-1 text-white font-semibold transition-transform ease-in-out duration-500 hover:scale-110">
+                    <Youtube />
+                </a>
+
+            </section>
+
+
         </div>
     </div>
 

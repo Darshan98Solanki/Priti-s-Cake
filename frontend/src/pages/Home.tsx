@@ -7,6 +7,9 @@ import Button from "../components/Button";
 import Testimonials from "../components/Testimonials";
 import Services from "../components/Services";
 import Banner from "../components/Banner";
+import ownerAvtar from "../assets/images/temp.jpeg"
+import About from "../components/About";
+import Footer from "../components/Footer";
 
 export default function Home() {
 
@@ -37,7 +40,16 @@ export default function Home() {
             <Testimonials/>
             <Services/>
             <Banner/>
+            <Headings 
+                heading="Founder & Chef"
+                subheading="Passionate to serve healthy and homemade products"
+            />
+            <div className="flex flex-col items-center justify-center my-10">
+                <img src={ownerAvtar} alt="" className="inline-block size-64 rounded-full ring-2 ring-white"/>
+            </div>
+            <About/>
         </main>
+        <Footer/>
     </div>
 
 }
