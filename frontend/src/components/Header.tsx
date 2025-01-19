@@ -1,5 +1,6 @@
 import { useState } from "react"
 import logo from '../assets/images/logo.png'
+import { Link } from "react-router-dom"
 export default function Header() {
 
     const [open, setOpen] = useState(false)
@@ -11,11 +12,11 @@ export default function Header() {
                     <nav aria-label="Global" className="hidden md:block">
                         <ul className="flex items-center gap-10 text-sm">
                             <li>
-                                <a className="text-black uppercase font-bold transition hover:text-[#65451F] border-[#65451F] hover:border-b-2" href="#"> Home </a>
+                                <Link className="text-black uppercase font-bold transition hover:text-[#65451F] border-[#65451F] hover:border-b-2" to="/"> Home </Link>
                             </li>
 
                             <li>
-                                <a className="text-black uppercase font-bold transition hover:text-[#65451F] border-[#65451F] hover:border-b-2" href="#"> Products </a>
+                                <Link className="text-black uppercase font-bold transition hover:text-[#65451F] border-[#65451F] hover:border-b-2" to="/products"> Products </Link>
                             </li>
                             <a className="block" href="#">
                                 <img src={logo} className="w-12 h-12 md:w-32 md:h-32" />
@@ -48,12 +49,12 @@ export default function Header() {
                         {open && (
                             <div className="absolute end-0 z-20 mt-0.5 w-56 divide-y divide-gray-100 rounded-md border border-gray-100 bg-white shadow-lg" role="menu">
                                 <div className="p-2">
-                                    <a href="#" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
+                                    <Link to="/" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
                                         Home
-                                    </a>
-                                    <a href="#" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
+                                    </Link>
+                                    <Link to="/products" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
                                         Product
-                                    </a>
+                                    </Link>
                                     <a href="#" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
                                         Gallery
                                     </a>
