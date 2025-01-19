@@ -10,7 +10,7 @@ import TopBar from "../components/TopBar";
 export default function Products() {
 
     const [filter, setFilter] = useState("")
-
+    console.log(filter)
     return <div className="bg-[#FFF6E4] min-h-screen">
         <TopBar />
         <Header />
