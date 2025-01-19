@@ -9,6 +9,7 @@ export default {
       fontFamily: {
         leckerli: ['"Leckerli One"', 'cursive'], // Add 'cursive' as fallback
         MarkoOne: ['"Marko One"', 'cursive'], // Add 'cursive' as fallback
+        Aclonica: ['"Aclonicas"', 'cursive'], // Add 'cursive' as fallback
       },
     },
   },
