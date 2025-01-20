@@ -30,7 +30,7 @@ export default function Header() {
                             </li>
                         </ul>
                     </nav>
-                    <Link className="block md:hidden float-left" to="/home">
+                    <Link className="block md:hidden float-left" to="/">
                         <img src={logo} className="w-24 h-24 md:w-32 md:h-32" />
                     </Link>
                 </div>
