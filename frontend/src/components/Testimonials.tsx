@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 export default function TestimonialCarousel() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,6 +20,23 @@ export default function TestimonialCarousel() {
             image: "https://randomuser.me/api/portraits/men/10.jpg"
         }
     ];
+
+    useEffect(() => {
+        let interval: any | undefined;
+        if (true) {
+            interval = setInterval(() => {
+                setCurrentIndex((prevIndex) =>
+                    prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+                );
+            }, 3500); // Change slide every 5 seconds
+        }
+
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
+    }, [testimonials.length]);
 
     const nextSlide = () => {
         setCurrentIndex((prevIndex) =>
@@ -95,7 +112,7 @@ export default function TestimonialCarousel() {
                         </div>
                     </div>
                     {/* Dots Navigation */}
-                    <div className="flex justify-center gap-2 mt-8">
+                    <div className="flex justify-center gap-2 md:mt-8">
                         {testimonials.map((_, index) => (
                             <button
                                 key={index}

@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from "react";
-import About from "../components/About";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -30,7 +29,6 @@ export default function Products() {
             <ProductCard orderNow={true} />
         </div>
         <Banner />
-        <About />
         <Footer />
     </div>
 

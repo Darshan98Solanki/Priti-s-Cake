@@ -1,10 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Marko+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Marko+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body::-webkit-scrollbar {
-    display: none;
-  }
+  display: none;
+}
+
+/* From Uiverse.io by saidbl1 */
+.frame {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5cfa9;
+}
+
+.frame img {
+  border: 2px solid black;
+  max-width: 100%;
+  max-height: 100%;
+  /* border-radius: 3px; */
+  scale: 0.87;
+  transition: transform 0.3s;
+  transition-timing-function: cubic-bezier(0.4, 1.55, 0.74, 0.55);
+}
+
+.frame:hover img {
+  transform: scale(1.07);
+}

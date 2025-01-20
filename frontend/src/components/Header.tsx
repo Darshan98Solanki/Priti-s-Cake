@@ -18,11 +18,11 @@ export default function Header() {
                             <li>
                                 <Link className="text-black uppercase font-bold transition hover:text-[#65451F] border-[#65451F] hover:border-b-2" to="/products"> Products </Link>
                             </li>
-                            <a className="block" href="#">
+                            <Link className="block" to="/">
                                 <img src={logo} className="w-12 h-12 md:w-32 md:h-32" />
-                            </a>
+                            </Link>
                             <li>
-                                <a className="text-black uppercase font-bold transition hover:text-[#65451F] border-[#65451F] hover:border-b-2" href="#"> Gallery </a>
+                                <Link className="text-black uppercase font-bold transition hover:text-[#65451F] border-[#65451F] hover:border-b-2" to="/gallery"> Gallery </Link>
                             </li>
 
                             <li>
@@ -30,9 +30,9 @@ export default function Header() {
                             </li>
                         </ul>
                     </nav>
-                    <a className="block md:hidden float-left" href="#">
+                    <Link className="block md:hidden float-left" to="/home">
                         <img src={logo} className="w-24 h-24 md:w-32 md:h-32" />
-                    </a>
+                    </Link>
                 </div>
                 <div className="md:flex md:gap-12">
                     <div className={`block align-middle float-right md:hidden`}>
@@ -55,9 +55,9 @@ export default function Header() {
                                     <Link to="/products" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
                                         Products
                                     </Link>
-                                    <a href="#" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
+                                    <Link to="/gallery" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
                                         Gallery
-                                    </a>
+                                    </Link>
                                     <a href="#" className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700" role="menuitem">
                                         Blogs
                                     </a>
