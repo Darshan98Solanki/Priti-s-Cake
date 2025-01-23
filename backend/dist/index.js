@@ -16,9 +16,9 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 require("dotenv/config");
 const multer_1 = __importDefault(require("multer"));
-const zod_1 = __importDefault(require("zod"));
 const edge_1 = require("@prisma/client/edge");
 const extension_accelerate_1 = require("@prisma/extension-accelerate");
+const pritis_cake_1 = require("@darshan98solanki/pritis-cake");
 // init cloudinary data
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
@@ -33,12 +33,6 @@ const storage = multer_1.default.diskStorage({
         cb(null, file.originalname);
     }
 });
-// init zod schema for cake
-const CakeSchema = zod_1.default.object({
-    name: zod_1.default.string({ message: "Cake is required" }).min(3, { message: "Cake name should be greater than 3 characters" }),
-    halfKgPrice: zod_1.default.string({ message: "Cake half kg price is required" }).min(1, { message: "Cake price should be greater than 0" }),
-    oneKgPrice: zod_1.default.string({ message: "Cake one kg price is required" }).min(1, { message: "Cake price should be greater than 0" })
-});
 // some extra stuff
 const upload = (0, multer_1.default)({ storage });
 const app = (0, express_1.default)();
@@ -46,10 +40,10 @@ const port = 3000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-// add cake 
+// add cake api
 app.post("/cake", upload.single('image'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const parseData = CakeSchema.safeParse(req.body);
+    const parseData = pritis_cake_1.cakeSchema.safeParse(req.body);
     const image = req.file;
     if (!parseData.success || !image) {
         res.json({ message: (_a = parseData.error) === null || _a === void 0 ? void 0 : _a.errors[0].message });
@@ -75,6 +69,7 @@ app.post("/cake", upload.single('image'), (req, res) => __awaiter(void 0, void 0
                         }
                     });
                     res.status(201).json({ message: "cake added successfully" });
+                    return;
                 }
                 catch (err) {
                     if (err instanceof edge_1.Prisma.PrismaClientKnownRequestError) {
@@ -98,7 +93,65 @@ app.post("/cake", upload.single('image'), (req, res) => __awaiter(void 0, void 0
         }
     }
 }));
-// get all cakes
+// update cake api
+app.put('/cake', upload.single('image'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    const parseData = pritis_cake_1.updateCakeSchema.safeParse(req.body);
+    if (!parseData.success) {
+        res.json({ message: (_a = parseData.error) === null || _a === void 0 ? void 0 : _a.errors[0].message });
+        return;
+    }
+    else {
+        const image = req.file;
+        const id = (_b = parseData.data) === null || _b === void 0 ? void 0 : _b.id;
+        const prisma = new edge_1.PrismaClient({
+            datasourceUrl: process.env.DATABASE_URL,
+        }).$extends((0, extension_accelerate_1.withAccelerate)());
+        try {
+            if (image) {
+                yield cloudinary.uploader.destroy(parseData.data.publicId);
+                const response = yield cloudinary.uploader.upload(image.path, {
+                    public_id: parseData.data.publicId,
+                    invalidate: true,
+                    folder: 'images',
+                });
+                yield prisma.cake.update({
+                    data: {
+                        name: parseData.data.name,
+                        halfKgPrice: Number(parseData.data.halfKgPrice),
+                        OneKgPrice: Number(parseData.data.oneKgPrice),
+                        // publicId: response.public_id,
+                        // Image: response.secure_url
+                    },
+                    where: {
+                        id: parseData.data.id
+                    }
+                });
+                res.status(201).json({ message: "cake details updated successfully" });
+                return;
+            }
+            else {
+                yield prisma.cake.update({
+                    data: {
+                        name: parseData.data.name,
+                        halfKgPrice: Number(parseData.data.halfKgPrice),
+                        OneKgPrice: Number(parseData.data.oneKgPrice),
+                    },
+                    where: {
+                        id: parseData.data.id
+                    }
+                });
+                res.json({ message: "Cake details updated successfully" });
+                return;
+            }
+        }
+        catch (_c) {
+            res.status(500).json({ error: 'Internal Server Error' });
+            return;
+        }
+    }
+}));
+// get all cakes api
 app.get("/cakes", upload.single('image'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filter = req.query.filter || "";
     try {
@@ -123,7 +176,7 @@ app.get("/cakes", upload.single('image'), (req, res) => __awaiter(void 0, void 0
         return;
     }
 }));
-// get cake by id
+// get cake by id api
 app.get("/cake/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const cakeId = req.params.id;
     try {
@@ -143,6 +196,40 @@ app.get("/cake/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (_a) {
         res.status(500).json({ error: 'Internal Server Error' });
         return;
+    }
+}));
+// delete cake api
+app.delete("/cake", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const id = req.query.id;
+    const publicId = req.query.publicId;
+    const parseData = pritis_cake_1.removeCakeSchema.safeParse({
+        id, publicId
+    });
+    if (!parseData.success) {
+        console.log(parseData.error, req.body);
+        res.json({ message: (_a = parseData.error) === null || _a === void 0 ? void 0 : _a.errors[0].message });
+        return;
+    }
+    else {
+        try {
+            const prisma = new edge_1.PrismaClient({
+                datasourceUrl: process.env.DATABASE_URL,
+            }).$extends((0, extension_accelerate_1.withAccelerate)());
+            yield cloudinary.uploader.destroy(publicId);
+            yield prisma.cake.delete({
+                where: {
+                    id
+                }
+            });
+            res.status(200).json({
+                message: "Cake Delete Successfully"
+            });
+        }
+        catch (_b) {
+            res.status(500).json({ error: 'Internal Server Error' });
+            return;
+        }
     }
 }));
 app.listen(port);
