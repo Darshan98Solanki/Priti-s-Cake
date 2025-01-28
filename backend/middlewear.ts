@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import {Express, Request, Response, NextFunction }from 'express'
+import {Request, Response, NextFunction }from 'express'
 
 export default function middlewear(req: Request, res:Response, next:NextFunction){
 
