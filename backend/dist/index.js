@@ -16,6 +16,8 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 require("dotenv/config");
 const multer_1 = __importDefault(require("multer"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const edge_1 = require("@prisma/client/edge");
 const extension_accelerate_1 = require("@prisma/extension-accelerate");
 const pritis_cake_1 = require("@darshan98solanki/pritis-cake");
@@ -228,6 +230,84 @@ app.delete("/cake", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         catch (_b) {
             res.status(500).json({ error: 'Internal Server Error' });
+            return;
+        }
+    }
+}));
+// create user api
+app.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const username = req.body.username;
+    const password = req.body.password;
+    if (!username || !password) {
+        res.status(401).json({ message: "Please enter valid username and password" });
+        return;
+    }
+    else {
+        try {
+            const prisma = new edge_1.PrismaClient({
+                datasourceUrl: process.env.DATABASE_URL,
+            }).$extends((0, extension_accelerate_1.withAccelerate)());
+            const encryptedPass = yield bcrypt_1.default.hash(password, 10);
+            const user = yield prisma.user.create({
+                data: {
+                    email: username,
+                    password: encryptedPass
+                }
+            });
+            if (user) {
+                res.status(200).json({ message: "User created successfully" });
+                return;
+            }
+        }
+        catch (_a) {
+            res.status(500).json({ message: "Internal Server Error" });
+            return;
+        }
+    }
+}));
+app.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const username = req.body.username;
+    const password = req.body.password;
+    if (!username || !password) {
+        res.status(401).json({ message: "Please enter valid username and password" });
+        return;
+    }
+    else {
+        try {
+            const prisma = new edge_1.PrismaClient({
+                datasourceUrl: process.env.DATABASE_URL,
+            }).$extends((0, extension_accelerate_1.withAccelerate)());
+            const user = yield prisma.user.findFirst({
+                where: {
+                    email: username
+                },
+                select: {
+                    password: true
+                }
+            });
+            if (user) {
+                bcrypt_1.default.compare(password, user.password, (err, resJWT) => __awaiter(void 0, void 0, void 0, function* () {
+                    if (resJWT) {
+                        const token = yield jsonwebtoken_1.default.sign({
+                            email: username
+                        }, process.env.JWT_SECRET);
+                        res.status(200).json({ token });
+                        return;
+                    }
+                    else {
+                        res.status(401).json({ message: "Invalid password" });
+                        return;
+                    }
+                }));
+            }
+            else {
+                res.status(404).json({ message: "User not found" });
+                return;
+            }
+        }
+        catch (e) {
+            console.log(e);
+            res.status(500).json({ message: "Internal serve error" });
             return;
         }
     }

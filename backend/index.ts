@@ -1,8 +1,10 @@
 import express from 'express'
 import cors from 'cors'
 import "dotenv/config"
-import multer from 'multer';
-import { Prisma, PrismaClient } from '@prisma/client/edge';
+import multer from 'multer'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { Prisma, PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { cakeSchema, removeCakeSchema, updateCakeSchema } from '@darshan98solanki/pritis-cake'
 
@@ -189,7 +191,7 @@ app.get("/cakes", upload.single('image'), async (req, res) => {
 app.get("/cake/:id", async (req, res) => {
 
     const cakeId = req.params.id
-    
+
     try {
         const prisma = new PrismaClient({
             datasourceUrl: process.env.DATABASE_URL,
@@ -239,17 +241,115 @@ app.delete("/cake", async (req, res) => {
 
             await cloudinary.uploader.destroy(publicId);
             await prisma.cake.delete({
-                where:{
+                where: {
                     id
                 }
             })
 
             res.status(200).json({
-                message:"Cake Delete Successfully"
+                message: "Cake Delete Successfully"
             })
 
         } catch {
             res.status(500).json({ error: 'Internal Server Error' });
+            return
+        }
+
+    }
+
+})
+
+// create user api
+app.post("/user", async (req, res) => {
+
+    const username = req.body.username
+    const password = req.body.password
+
+
+    if (!username || !password) {
+        res.status(401).json({ message: "Please enter valid username and password" })
+        return
+    } else {
+
+        try {
+
+            const prisma = new PrismaClient({
+                datasourceUrl: process.env.DATABASE_URL,
+            }).$extends(withAccelerate())
+
+            const encryptedPass = await bcrypt.hash(password, 10)
+            const user = await prisma.user.create({
+                data: {
+                    email: username,
+                    password: encryptedPass
+                }
+            })
+
+            if (user) {
+                res.status(200).json({ message: "User created successfully" })
+                return
+            }
+
+        } catch {
+            res.status(500).json({ message: "Internal Server Error" })
+            return
+        }
+    }
+
+})
+
+app.post("/signin", async (req, res) => {
+
+    const username = req.body.username
+    const password = req.body.password
+
+
+    if (!username || !password) {
+        res.status(401).json({ message: "Please enter valid username and password" })
+        return
+    } else {
+
+        try {
+
+            const prisma = new PrismaClient({
+                datasourceUrl: process.env.DATABASE_URL,
+            }).$extends(withAccelerate())
+
+            const user = await prisma.user.findFirst({
+                where: {
+                    email: username
+                },
+                select: {
+                    password: true
+                }
+            })
+
+            if (user) {
+
+                bcrypt.compare(password, user.password, async (err, resJWT) => {
+
+                    if (resJWT) {
+                        const token = await jwt.sign({
+                            email: username
+                        }, process.env.JWT_SECRET)
+
+                        res.status(200).json({ token })
+                        return
+                    } else {
+                        res.status(401).json({ message:"Invalid password"})
+                        return
+                    }
+
+                })
+
+            } else {
+                res.status(404).json({ message: "User not found" })
+                return
+            }
+
+        } catch (e) {
+            console.log(e)
+            res.status(500).json({ message: "Internal serve error" })
             return
         }
 
