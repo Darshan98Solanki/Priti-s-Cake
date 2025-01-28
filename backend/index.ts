@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken'
 import { Prisma, PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { cakeSchema, removeCakeSchema, updateCakeSchema } from '@darshan98solanki/pritis-cake'
+import middlewear from './middlewear'
 
 // init cloudinary data
 const cloudinary = require('cloudinary').v2;
@@ -35,7 +36,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // add cake api
-app.post("/cake", upload.single('image'), async (req, res) => {
+app.post("/cake", middlewear, upload.single('image'), async (req, res) => {
 
     const parseData = cakeSchema.safeParse(req.body)
     const image = req.file
@@ -88,7 +89,7 @@ app.post("/cake", upload.single('image'), async (req, res) => {
 })
 
 // update cake api
-app.put('/cake', upload.single('image'), async (req, res) => {
+app.put('/cake', middlewear, upload.single('image'), async (req, res) => {
 
     const parseData = updateCakeSchema.safeParse(req.body)
 
@@ -155,7 +156,7 @@ app.put('/cake', upload.single('image'), async (req, res) => {
 })
 
 // get all cakes api
-app.get("/cakes", upload.single('image'), async (req, res) => {
+app.get("/cakes", async (req, res) => {
 
     const filter = req.query.filter as string || ""
 
@@ -218,7 +219,7 @@ app.get("/cake/:id", async (req, res) => {
 })
 
 // delete cake api
-app.delete("/cake", async (req, res) => {
+app.delete("/cake", middlewear, async (req, res) => {
 
     const id = req.query.id as string
     const publicId = req.query.publicId as string
