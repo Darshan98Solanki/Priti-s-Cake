@@ -9,6 +9,8 @@ import { withAccelerate } from '@prisma/extension-accelerate'
 import { cakeSchema, removeCakeSchema, updateCakeSchema } from '@darshan98solanki/pritis-cake'
 import middlewear from './middlewear'
 
+console.log("server start")
+
 // init cloudinary data
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
