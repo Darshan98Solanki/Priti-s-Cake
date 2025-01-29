@@ -8,11 +8,6 @@
     "vercel-build": "prisma generate && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ],
   "author": "darshan",
   "license": "ISC",
   "description": "",
