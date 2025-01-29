@@ -42,7 +42,7 @@ app.post("/cake", middlewear, upload.single('image'), async (req, res) => {
     const image = req.file
 
     if (!parseData.success || !image) {
-        res.json({ message: parseData.error?.errors[0].message })
+        res.status(400).json({ message: parseData.error?.errors[0].message || "Image is missing"})
         return
     } else {
         const prisma = new PrismaClient({
