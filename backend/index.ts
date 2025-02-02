@@ -126,13 +126,15 @@ app.put("/cake", middlewear, upload.single("image"), async (req, res) => {
           folder: "images",
         });
 
+        // const newImageUrl = response.secure_url.replace("/upload/", `/upload/v${response.version}/`);
+
         await prisma.cake.update({
           data: {
             name: parseData.data.name,
             halfKgPrice: Number(parseData.data.halfKgPrice),
             OneKgPrice: Number(parseData.data.oneKgPrice),
             // publicId: response.public_id,
-            // Image: response.secure_url
+            Image: response.secure_url
           },
           where: {
             id: parseData.data.id,
