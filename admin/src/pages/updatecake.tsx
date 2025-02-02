@@ -18,7 +18,6 @@ export default function UpdateCake() {
         halfKgPrice: "",
         oneKgPrice: "",
     })
-    const [disable, setDisable] = useState(false)
     const navigator = useNavigate()
 
     useEffect(() => {
@@ -98,7 +97,7 @@ export default function UpdateCake() {
         }
     }
 
-    return <section className="relative flex flex-wrap lg:h-screen lg:items-center" >
+    return <section className="relative flex flex-wrap lg:min-h-screen lg:items-center" >
         <Loader show={loading} />
         <div className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
             <div className="group relative block overflow-hidden">
@@ -137,10 +136,9 @@ export default function UpdateCake() {
                     <div className="flex flex-row gap-4">
                         <button
                             type="submit"
-                            disabled={disable}
                             className="w-1/2 font-bold rounded border bg-green-500 hover:bg-green-600 px-4 py-3 text-sm text-white"
                         >
-                            {disable ? "Updating..." : "Update"}
+                            Update
                         </button>
                         <button
                             type="button" // Changed to prevent accidental form submission
@@ -155,13 +153,14 @@ export default function UpdateCake() {
             </div>
         </div>
 
-        <div className="relative h-64 w-full sm:h-96 lg:h-full lg:w-1/2">
+        <div className="relative w-full h-64 sm:h-96 lg:h-full lg:w-1/2 flex justify-center items-center">
             <img
-                alt=""
+                alt="Cake"
                 src={imageURL}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="max-w-full h-auto object-contain rounded-lg shadow-lg"
             />
         </div>
+
     </section >
 
 }
