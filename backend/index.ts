@@ -121,6 +121,7 @@ app.put("/cake", middlewear, upload.single("image"), async (req, res) => {
         const response = await cloudinary.uploader.upload(image.path, {
           public_id: parseData.data.publicId,
           invalidate: true,
+          overwrite: true,
           folder: "images",
         });
 
@@ -224,7 +225,6 @@ app.delete("/cake", middlewear, async (req, res) => {
   });
 
   if (!parseData.success) {
-    console.log(parseData.error, req.body);
     res.json({ message: parseData.error?.errors[0].message });
     return;
   } else {
@@ -233,7 +233,8 @@ app.delete("/cake", middlewear, async (req, res) => {
         datasourceUrl: process.env.DATABASE_URL,
       }).$extends(withAccelerate());
 
-      await cloudinary.uploader.destroy(publicId);
+      await cloudinary.uploader.destroy(publicId, {invalidate:true, resource_type:'image'});
+
       await prisma.cake.delete({
         where: {
           id,
