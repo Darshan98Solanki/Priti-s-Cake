@@ -51,11 +51,9 @@ app.post("/cake", middlewear, upload.single("image"), async (req, res) => {
   const image = req.file;
 
   if (!parseData.success || !image) {
-    res
-      .status(400)
-      .json({
-        message: parseData.error?.errors[0].message || "Image is missing",
-      });
+    res.status(400).json({
+      message: parseData.error?.errors[0].message || "Image is missing",
+    });
     return;
   } else {
     const prisma = new PrismaClient({
@@ -134,7 +132,7 @@ app.put("/cake", middlewear, upload.single("image"), async (req, res) => {
             halfKgPrice: Number(parseData.data.halfKgPrice),
             OneKgPrice: Number(parseData.data.oneKgPrice),
             // publicId: response.public_id,
-            Image: response.secure_url
+            Image: response.secure_url,
           },
           where: {
             id: parseData.data.id,
@@ -254,39 +252,10 @@ app.delete("/cake", middlewear, async (req, res) => {
   }
 });
 
-// create user api
-app.post("/user", async (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-
-  if (!username || !password) {
-    res
-      .status(401)
-      .json({ message: "Please enter valid username and password" });
-    return;
-  } else {
-    try {
-      const prisma = new PrismaClient({
-        datasourceUrl: process.env.DATABASE_URL,
-      }).$extends(withAccelerate());
-
-      const encryptedPass = await bcrypt.hash(password, 10);
-      const user = await prisma.user.create({
-        data: {
-          email: username,
-          password: encryptedPass,
-        },
-      });
-
-      if (user) {
-        res.status(200).json({ message: "User created successfully" });
-        return;
-      }
-    } catch {
-      res.status(500).json({ message: "Internal Server Error" });
-      return;
-    }
-  }
+// verify user without signin
+app.get("/me", middlewear, (req, res) => {
+  res.status(200).json({ message: "done" });
+  return;
 });
 
 app.post("/signin", async (req, res) => {
@@ -341,6 +310,7 @@ app.post("/signin", async (req, res) => {
     }
   }
 });
+
 
 // app.listen(port)
 export default app;
