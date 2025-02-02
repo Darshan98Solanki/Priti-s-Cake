@@ -34,8 +34,9 @@ export default function Home() {
         if (cakesSelector.state === "loading")
             setLoader(true)
         if (cakesSelector.state === "hasValue") {
+            
             setLoader(false)
-            setCakesAtom(cakesSelector.contents.data)
+            setCakesAtom(cakesSelector.contents)
         }
     }, [cakesSelector, cakesAtom])
 
