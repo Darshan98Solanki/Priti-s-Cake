@@ -180,9 +180,7 @@ app.get("/cakes", async (req, res) => {
       },
     });
 
-    res.status(200).json({
-      data: cakes,
-    });
+    res.status(200).json(cakes);
     return;
   } catch {
     res.status(500).json({ error: "Internal Server Error" });
