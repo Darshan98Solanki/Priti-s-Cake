@@ -13,8 +13,12 @@ export default function InnerCard({ data }: { data: Cake }) {
 
         try {
             setDisable(true)
-            await axios.delete(`https://priti-s-cake-5q8l.vercel.app/cake?id=${data.id}&publicId=${data.publicId}`,
+            await axios.delete(`https://priti-s-cake-5q8l.vercel.app/cake`,
                 {
+                    params:{
+                        id:data.id,
+                        publicId:data.publicId
+                    },
                     headers: {
                         Authorization: localStorage.getItem('authorization')
                     }
