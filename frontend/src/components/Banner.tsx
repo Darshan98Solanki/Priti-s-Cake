@@ -6,7 +6,7 @@ export default function Banner(){
     {/* Background image */}
     <div className="absolute inset-0">
       <img 
-        src="https://s3-alpha-sig.figma.com/img/7930/9acd/b38c49c98c926492398075d4faa6be76?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=im68svBTaBJNwFeNdZEZRCabbhMSeoLmbGaBGUcdUT5l1OZZw5r97E180kBGw0D0gJlK9BBkYXSJLW5PSwJCFqPNqz3FrmPfyY4HwhBLafuWaG-yCqStVmVm9qP5UHbLAseuoqcsWL~qo1YlRqvOdWhqMqBBscGdf~KHCPflQdB~-1LOVbQ8cL85teWqM24cuzhnrYOZf9xL~T5byfZIY3JTJiFrCnbboRSiZ6O6fITsGOeqnTM834GOhi-XoO4MC2N1iVo7yYPzRKnBaelEwqzhheBps5kctNVesQzy0G3ceVCkG2gDzCFOKUYcZ25SCrxpdB29TlO8gllMsOKDoQ__" 
+        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fkj1bcdn.b-cdn.net%2Fmedia%2F81142%2Fwheat.jpg&f=1&nofb=1&ipt=fabd7f17e7f651f34915136754f9b9842af58021e5a332d991fd16d8dd426719&ipo=images" 
         alt="Bakery background" 
         className="w-full h-full object-cover transform scale-x-[-1]"
       />

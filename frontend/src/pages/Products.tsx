@@ -1,32 +1,56 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Headings from "../components/Headings";
 import ProductCard from "../components/ProductCard";
 import TopBar from "../components/TopBar";
+import axios from "axios";
+import ProductCardSkeleton from "../components/ProductCardSkeleton";
+
+export type Cake = {
+    id: string,
+    name: string,
+    halfKgPrice: number,
+    OneKgPrice: number,
+    publicId: string,
+    Image: string
+}
 
 export default function Products() {
 
     const [filter, setFilter] = useState("")
-    console.log(filter)
+    const [cakes, setCakes] = useState<Cake[]>([])
+
+    useEffect(() => {
+        const time = setTimeout(() => {
+            axios.get("https://priti-s-cake-5q8l.vercel.app/cakes", {
+                params: {
+                    filter
+                }
+            }).then(response => {
+                setCakes(response.data)
+            }).finally(() => {
+                console.log(cakes)
+            })
+        }, 500)
+        return ()=>{
+            clearTimeout(time)
+        }
+    }, [filter])
+
     return <div className="bg-[#FFF6E4] min-h-screen">
         <TopBar />
         <Header />
         <Headings heading="Our Products" subheading="Best cakes ever" />
-        <SearchBar onChange={(e)=>{
+        <SearchBar onChange={(e) => {
             setFilter(e.target.value);
-        }}/>
+        }} />
         <div className="grid md:grid-cols-3 md:gap-4 grid-cols-1 gap-12 md:space-x-5 md:mx-20 mx-5 my-10">
-            <ProductCard orderNow={true} />
-            <ProductCard orderNow={true} />
-            <ProductCard orderNow={true} />
-            <ProductCard orderNow={true} />
-            <ProductCard orderNow={true} />
-            <ProductCard orderNow={true} />
-            <ProductCard orderNow={true} />
-            <ProductCard orderNow={true} />
-            <ProductCard orderNow={true} />
+            {cakes.length === 0 ? Array(10).fill(0).map((_,id)=><ProductCardSkeleton key={id} orderNow={true}/>) 
+                : cakes.length !== 0 && cakes.map((cake: Cake, id) =>
+                <ProductCard cake={cake} orderNow={true} key={id} />
+            )}
         </div>
         <Banner />
         <Footer />
@@ -34,7 +58,7 @@ export default function Products() {
 
 }
 
-function SearchBar({onChange}:{onChange : (e:ChangeEvent<HTMLInputElement>)=>void}) {
+function SearchBar({ onChange }: { onChange: (e: ChangeEvent<HTMLInputElement>) => void }) {
 
     return <div className="w-full md:flex md:justify-end">
 
